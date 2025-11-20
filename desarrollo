@@ -1,1 +1,59 @@
+// ==============================================================================================================================
+// Implementar consultas utilizando el lenguaje de consulta de MongoDB para realizar las siguientes operaciones:
+// ==============================================================================================================================
+
+// ========================================== Inserción (INSERT) ==========================================
+db.productos_colombianos.insertOne({
+  nombre: "Café Quindío",
+  categoria: "Café",
+  precio: 25000,
+  disponible: true
+});
+
+// ========================================== Selección (FIND) ==========================================
+db.productos_colombianos.find({ categoria: "Café" });
+
+// Actualización (UPDATE)
+db.productos_colombianos.updateOne(
+  { nombre: "Café Quindío" },
+  { $set: { precio: 26000 } }
+);
+
+// ========================================== Eliminación (DELETE) ==========================================
+db.productos_colombianos.deleteOne({ nombre: "Panela de Boyacá" });
+
+// CONSULTAS CON FILTROS Y OPERADORES
+// Buscar categorías especificas
+db.productos_colombianos.find({
+  categoria: { $in: ["Huevos", "Panela"] }
+});
+
+// ========================================== CONSULTAS DE AGREGACIÓN ===========================================
+// ========================================== Contar cuántos productos hay en total =============================
+db.productos_colombianos.aggregate([
+  { $count: "total_productos" }
+]);
+
+// ========================================== Suma total de los precios ==========================================
+db.productos_colombianos.aggregate([
+  { $group: { _id: null, suma_precios: { $sum: "$precio" } } }
+]);
+
+// ========================================== Precio promedio de los productos ==========================================
+db.productos_colombianos.aggregate([
+  { $group: { _id: null, precio_promedio: { $avg: "$precio" } } }
+]);
+
+// ========================================== Precio mínimo y máximo ==========================================
+db.productos_colombianos.aggregate([
+  {
+    $group: {
+      _id: null,
+      precio_minimo: { $min: "$precio" },
+      precio_maximo: { $max: "$precio" }
+    }
+  }
+]);
+
+
 
